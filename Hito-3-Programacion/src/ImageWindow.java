@@ -31,8 +31,8 @@ public class ImageWindow extends JFrame {
         centerPanel.setLayout(new BorderLayout());
         commentCheckBox = new JCheckBox("Guardar tu comentario");
         commentTextField = new JTextField(20);
-        centerPanel.add(commentCheckBox, BorderLayout.WEST);
-        centerPanel.add(commentTextField, BorderLayout.EAST);
+        centerPanel.add(commentCheckBox, BorderLayout.EAST);
+        centerPanel.add(commentTextField, BorderLayout.WEST);
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel();
@@ -46,13 +46,15 @@ public class ImageWindow extends JFrame {
         imageComboBox.addActionListener(new ComboListener());
 
         fileComboBox = new JComboBox<>(new String[]{"img1.png", "img2.png", "img3.png"});
-        fileComboBox.setPreferredSize(new Dimension(300, fileComboBox.getPreferredSize().height));
-        fileComboBox.addActionListener(new ActionListener() {
+        fileComboBox.setPreferredSize(new Dimension(100, fileComboBox.getPreferredSize().height));
+        fileComboBox.addItemListener(new ItemListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedImage = (String) fileComboBox.getSelectedItem();
-                ImageIcon icon = new ImageIcon("Recursos/" + selectedImage);
-                imageLabel.setIcon(icon);
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String selectedImage = (String) fileComboBox.getSelectedItem();
+                    ImageIcon icon = new ImageIcon("Recursos/" + selectedImage);
+                    imageLabel.setIcon(icon);
+                }
             }
         });
         getContentPane().add(fileComboBox, BorderLayout.NORTH);
@@ -66,11 +68,6 @@ public class ImageWindow extends JFrame {
     }
 
     private void loadCombo() {
-        String[] imageNames = {"img1.png"};
-        for (String name : imageNames) {
-            imageComboBox.addItem(name);
-        }
-        imageComboBox.setSelectedIndex(0);
     }
 
     private class ComboListener implements ActionListener {
